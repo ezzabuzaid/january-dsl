@@ -1,0 +1,7 @@
+Table(name="Users", fields=[
+  TableField(name="id", type="primary-key"),
+  TableField(name="username", type="single-line"),
+  TableField(name="email", type="email"),
+  TableField(name="password", type="password"),
+  TableField(name="createdAt", type="timestamp")
+])

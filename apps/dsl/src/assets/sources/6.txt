@@ -1,0 +1,47 @@
+Table(
+  name="Products",
+  fields=[
+    TableField(name="id", type="primary-key"),
+    TableField(name="name", type="single-line"),
+    TableField(name="description", type="multi-line"),
+    TableField(name="price", type="decimal"),
+    TableField(name="stock", type="integer"),
+    TableField(name="category", type="select")
+  ],
+  queries=[
+    TableQuery(
+      name="LowStockProducts",
+      query=query(
+        conditions=[
+          where(input="stock", operator=lessThan(value="10"))
+        ]
+      )
+    ),
+    TableQuery(
+      name="HighPriceProducts",
+      query=query(
+        conditions=[
+          where(input="price", operator=greaterThan(value="1000"))
+        ]
+      )
+    )
+  ],
+  workflows=[
+    TableWorkflow(
+      name="AddNewProduct",
+      trigger=http(path="/add_new_product", method="POST"),
+      actions=[
+    atomic(actions=[
+      action(type="insert-record")
+    ])
+  ]
+),
+TableWorkflow(
+  name="UpdateProductStock",
+  trigger=http(path="/update_product_stock", method="PUT"),
+  actions=[
+    atomic(actions=[
+      action(type="update-record")
+    ])
+  ]
+)])

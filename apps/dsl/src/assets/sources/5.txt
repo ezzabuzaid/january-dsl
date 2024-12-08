@@ -1,0 +1,51 @@
+Table(
+  name="Orders",
+  fields=[
+    TableField(name="id", type="primary-key"),
+    TableField(name="customer_id", type="relation-id"),
+    TableField(name="product_id", type="relation-id"),
+    TableField(name="quantity", type="integer"),
+    TableField(name="order_date", type="date"),
+    TableField(name="status", type="select")
+  ],
+  queries=[
+    TableQuery(
+      name="PendingOrders",
+      query=query(
+        conditions=[
+          where(input="status", operator=equals(value="Pending")),
+          where(input="order_date", operator=afterOn(value=NOW()))
+        ]
+      )
+    ),
+    TableQuery(
+      name="CompletedOrders",
+      query=query(
+        conditions=[
+          where(input="status", operator=equals(value="Completed")),
+          where(input="order_date", operator=afterOn(value=NOW()))
+        ]
+      )
+    )
+  ],
+  workflows=[
+    TableWorkflow(
+      name="UpdateOrderStatus",
+      trigger=http(path="/update_order_status", method="PUT"),
+      actions=[
+        atomic(actions=[
+          action(type="update-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="CancelOrder",
+      trigger=http(path="/cancel_order", method="PUT"),
+      actions=[
+        atomic(actions=[
+          action(type="update-record")
+        ])
+      ]
+    )
+  ]
+);

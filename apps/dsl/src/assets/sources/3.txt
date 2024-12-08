@@ -1,0 +1,32 @@
+Table(name="Orders",
+  fields=[
+    TableField(name="id", type="primary-key"),
+    TableField(name="customer_id", type="relation"),
+    TableField(name="product_id", type="relation"),
+    TableField(name="quantity", type="integer"),
+    TableField(name="total_price", type="decimal"),
+    TableField(name="order_date", type="date")
+  ],
+  queries=[
+    TableQuery(name="RecentOrders", query=query(
+      conditions=[
+        where(input="order_date", operator=after(value=NOW(), operand="7", unit="day"))
+      ],
+      joins=[
+        innerJoin(tableName="Customers", conditions=[
+          where(input="Orders.customer_id", operator=equals(value="Customers.id"))
+        ]),
+        innerJoin(tableName="Products", conditions=[
+          where(input="Orders.product_id", operator=equals(value="Products.id"))
+        ])
+      ]
+    ))
+  ],
+  workflows=[
+    TableWorkflow(name="UpdateOrderTotal", trigger=http(path="/update_order", method="POST"), actions=[
+      atomic(actions=[
+        action(type="update-record")
+      ])
+    ])
+  ]
+)

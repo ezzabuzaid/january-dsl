@@ -1,0 +1,51 @@
+Table(
+  name="events",
+  fields=[
+    TableField(name="id", type="uuid"),
+    TableField(name="name", type="single-line"),
+    TableField(name="description", type="multi-line"),
+    TableField(name="location", type="single-line"),
+    TableField(name="start_time", type="datetime"),
+    TableField(name="end_time", type="datetime"),
+    TableField(name="organizer_id", type="relation", relatedEntity="users")
+  ],
+  queries=[
+    TableQuery(
+      name="findEventsByOrganizer",
+      query=query(
+        conditions=[
+          where(input="organizer_id", operator=equals(value=":organizer_id"))
+        ]
+      )
+    )
+  ],
+  workflows=[
+    TableWorkflow(
+      name="CreateEvent",
+      trigger=http(path="/create_event", method="POST"),
+      actions=[
+        atomic(actions=[
+          action(type="insert-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="UpdateEvent",
+      trigger=http(path="/update_event", method="PUT"),
+      actions=[
+        atomic(actions=[
+          action(type="update-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="DeleteEvent",
+      trigger=http(path="/delete_event", method="DELETE"),
+      actions=[
+        atomic(actions=[
+          action(type="delete-record")
+        ])
+      ]
+    )
+  ]
+);

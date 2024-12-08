@@ -1,0 +1,30 @@
+Table(
+    'name'='orders',
+    fields=[
+        TableField('name'='order_id', 'type'='primary-key'),
+        TableField('name'='customer_id', 'type'='relation'),
+        TableField('name'='total_price', 'type'='price')
+    ],
+    queries=[
+        TableQuery(
+            'name'='getOrdersByCustomerId',
+            query=query(
+                conditions=[
+                    where(
+                        input='customer_id',
+                        operator=equals(value='$customerId')
+                    )
+                ]
+            )
+        )
+    ],
+    workflows=[
+        TableWorkflow(
+            'name'='createOrder',
+            trigger=http(path='/orders/create', method='POST'),
+            'actions'=[
+                action(type='insert-record')
+            ]
+        )
+    ]
+)

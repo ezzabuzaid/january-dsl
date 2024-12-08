@@ -1,0 +1,133 @@
+/* TODO: All function names and parameters must be caseInsensitive  */
+
+Grammar {
+  Root = NonemptyListOf<Table, ";">
+  Table = Function<"Table", TableArgs>
+  TableArgs = Parameter<"name", String> (ArrayParameter<"fields", TableField>)? (ArrayParameter<"queries", TableQuery>)? (ArrayParameter<"workflows", TableWorkflow>)?
+
+  /* Table Field */
+  TableField = Function<"TableField", TableFieldArgs>
+  TableFieldArgs = Parameter<"name", String> Parameter<"type", PlainOrQuotes<FieldType>> (Parameter<"relatedEntity", String>)?
+  FieldType = QuoteString<("longitude" | "latitude" | "price" | "percentage" | "url" | "json" | "primary-key" | "relation" | "relation-id" | "uuid" | "email" | "password" | "single-line" | "multi-line" | "local-tel" | "international-tel" | "select" | "boolean" | "datetime" | "timestamp" | "date" | "time" | "decimal" | "integer" | "file")>
+
+  /* Table Query */
+  TableQuery = Function<"TableQuery", TableQueryArgs>
+  TableQueryArgs = Parameter<"name", String> Parameter<"query", QueryDsl>
+
+  /* Table Workflow */
+  TableWorkflow = Function<"TableWorkflow", TableWorkflowArgs>
+  TableWorkflowArgs = Parameter<"name", String> Parameter<"trigger", HttpTrigger> ArrayParameter<"actions", (TableWorkflowAtomicAction | TableWorkflowAction)>
+  HttpTrigger = Function<"http", HttpTriggerArgs>
+  HttpTriggerArgs = Parameter<"path", String> Parameter<"method", PlainOrQuotes<HttpMethod>>
+  HttpMethod = "POST" | "GET" | "PUT" | "DELETE" | "HEAD" | "PATCH"
+  TableWorkflowAtomicAction = Function<"atomic", TableWorkflowAtomicActionArgs>
+  TableWorkflowAtomicActionArgs = ArrayParameter<"actions", TableWorkflowAction>
+  TableWorkflowAction = Function<"action", TableWorkflowActionArgs>
+  TableWorkflowActionArgs = Parameter<"type", PlainOrQuotes<TableWorkflowActionType>>
+  TableWorkflowActionType = "delete-record" | "insert-record" | "update-record" | "replace-record"
+
+  /* Query DSL */
+  QueryDsl = Function<"query", QueryDslArgs>
+  QueryDslArgs = QueryConditionsList (ArrayParameter<"joins", QueryJoin>)? ( ArrayParameter<"groupBy", String>)?
+  QueryCombinator = Function<"and", QueryConditionsList> | Function<"or", QueryConditionsList>
+  QueryConditionsList = ArrayParameter<"conditions", QueryWhere>
+  QueryAggregatesList = ArrayParameter<"aggregates", AggregatesOperators>
+
+  /* Query Where */
+  QueryWhere = Function<"where", QueryWhereArgs>
+  QueryWhereArgs = Parameter<"input", String> Parameter<"operator", QueryOperators>
+  QueryOperators = QueryCombinator | StringOperators | Between | IsOperators | ComparisonOperators | DateOperators
+
+  /* String Operators */
+  Equals = Function<"equals", StringOperatorArgs>
+  NotEquals = Function<"notEquals", StringOperatorArgs>
+  StartsWith = Function<"startsWith", StringOperatorArgs>
+  EndsWith = Function<"endsWith", StringOperatorArgs>
+  Contains = Function<"contains", StringOperatorArgs>
+  StringOperatorArgs = Parameter<"value", StringLiteral>
+  StringOperators = NotEquals | Equals | StartsWith | EndsWith | Contains
+
+  /* Is Operators */
+  IsEmpty = Function<"isEmpty", "">
+  IsNotEmpty = Function<"isNotEmpty", "">
+  Is = Function<"is", IsArguments>
+  IsArguments = Parameter<"value", (NullLiteral|BooleanLiteral)>
+  IsOperators = Is | IsEmpty | IsNotEmpty
+
+  /* Date Operators */
+  Before = Function<"before", DateArgs>
+  BeforeOn = Function<"beforeOn", DateArgs>
+  After = Function<"after", DateArgs>
+  AfterOn = Function<"afterOn", DateArgs>
+  Between = Function<"between", BetweenArguments>
+  BetweenArguments = Parameter<"from", DateArgs> Parameter<"to", DateArgs>
+  DateOperators = Before | BeforeOn | After | AfterOn
+  DateArgs = Parameter<"value", (CurrentDate | Now | StringLiteral | NumericLiteral)> (Parameter<"operand", NumericLiteral>)? (Parameter<"unit", QuoteString<ArithmeticUnit>>)?
+  /* DateArgs same as ArithmeticArgs except operand and unit is optional */
+
+  /* Comparison Operators */
+  GreaterThan = Function<"greaterThan", ComparisonArguments>
+  LessThan = Function<"lessThan", ComparisonArguments>
+  GreaterThanOrEqual = Function<"greaterThanOrEqual", ComparisonArguments>
+  LessThanOrEqual = Function<"lessThanOrEqual", ComparisonArguments>
+  ComparisonArguments = Parameter<"value", (CurrentDate | Now | NumericLiteral | ArithmeticOperators)>
+  ComparisonOperators = GreaterThan | LessThan | GreaterThanOrEqual | LessThanOrEqual
+
+  /* Arithmetic Operators */
+  ArithmeticUnit = caseInsensitive<"year"> | caseInsensitive<"month"> | caseInsensitive<"day"> | caseInsensitive<"hour"> | caseInsensitive<"minute"> | caseInsensitive<"second"> | caseInsensitive<"millisecond">
+  Add = Function<"add", ArithmeticArgs>
+  Subtract = Function<"subtract", ArithmeticArgs>
+  Multiply = Function<"multiply", ArithmeticArgs>
+  Divide = Function<"divide", ArithmeticArgs>
+  ArithmeticArgs = Parameter<"value", (CurrentDate | Now | StringLiteral | NumericLiteral)> Parameter<"operand", NumericLiteral> Parameter<"unit", QuoteString<ArithmeticUnit>>
+  ArithmeticOperators = Add | Subtract | Multiply | Divide
+
+  /* Literals */
+  StringLiteral = String
+  BooleanLiteral = caseInsensitive<"true"> | caseInsensitive<"false">
+  NullLiteral = caseInsensitive<"null">
+  CurrentDate = Function<caseInsensitive<"CURRENT_DATE">, "">
+  Now = Function<caseInsensitive<"Now">, "">
+  NumericLiteral = Number | DoubleQuotedString<Number> | SingleQuotedString<Number>
+
+  /* Number Utils */
+  Number = Integer | UnsignedInteger | Float
+  Float = ((Integer | UnsignedInteger) ("." Integer)?)
+  Integer = (digit+)
+  UnsignedInteger = "-" Integer
+
+  /* Join */
+  QueryJoin = Function<QueryJoinType, QueryJoinArgs>
+  QueryJoinArgs = Parameter<"tableName", String> QueryConditionsList
+  QueryJoinType = "innerJoin"
+
+  /* Aggregates */
+  AggregateSum = Function<"sum", AggregateArgs>
+  AggregateCount = Function<"count", AggregateArgs>
+  AggregateAvg = Function<"avg", AggregateArgs>
+  AggregateMin = Function<"min", AggregateArgs>
+  AggregateMax = Function<"max", AggregateArgs>
+  AggregateArgs = Parameter<"input", String> Parameter<"alias", String>
+  AggregatesOperators =  AggregateSum | AggregateCount | AggregateAvg | AggregateMin | AggregateMax
+
+  /* Utilities */
+  Comma = ","
+  Assignment = "=" | ":"
+  LParen = "("
+  RParen = ")"
+  LBra = "["
+  RBra = "]"
+  SpecialChar = "." | "-" | "_" | "$" | "\\" | "/" | ":"
+  StringContent = (letter | SpecialChar)*
+  NonQuotedString = letter+
+  QuoteString<value> = DoubleQuotedString<value> | SingleQuotedString<value>
+  SingleQuotedString<value> = "'" value "'"
+  DoubleQuotedString<value> = "\"" value "\""
+  AnyString = DoubleQuotedString<(lower | upper)*> | SingleQuotedString<(lower | upper)*> | NonQuotedString
+  String = DoubleQuotedString<((lower | upper | SpecialChar)*)> | SingleQuotedString<((lower | upper | SpecialChar)*)>
+  PlainOrQuotes<value> = DoubleQuotedString<value> | SingleQuotedString<value> | value
+  Function<name, args> = PlainOrQuotes<name> LParen args RParen
+  Parameter<name, type> = PlainOrQuotes<name> Assignment type Comma?
+  ArrayParameter<name, type> = PlainOrQuotes<name> Assignment LBra NonemptyListOf<type, Comma?> RBra Comma?
+}
+

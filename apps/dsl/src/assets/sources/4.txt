@@ -1,0 +1,49 @@
+Table(
+  name="Customers",
+  fields=[
+    TableField(name="id", type="primary-key"),
+    TableField(name="first_name", type="single-line"),
+    TableField(name="last_name", type="single-line"),
+    TableField(name="email", type="email"),
+    TableField(name="phone", type="local-tel"),
+    TableField(name="registered_date", type="date")
+  ],
+  queries=[
+    TableQuery(
+      name="NewCustomers",
+      query=query(
+        conditions=[
+          where(input="registered_date", operator=afterOn(value=NOW()))
+        ]
+      )
+    ),
+    TableQuery(
+      name="InactiveCustomers",
+      query=query(
+        conditions=[
+          where(input="last_purchase_date", operator=before(value=NOW()))
+        ]
+      )
+    )
+  ],
+  workflows=[
+    TableWorkflow(
+      name="SendWelcomeEmail",
+      trigger=http(path="/send_welcome_email", method="POST"),
+      actions=[
+        atomic(actions=[
+          action(type="insert-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="DeleteCustomer",
+      trigger=http(path="/delete_customer", method="DELETE"),
+      actions=[
+        atomic(actions=[
+          action(type="delete-record")
+        ])
+      ]
+    )
+  ]
+);

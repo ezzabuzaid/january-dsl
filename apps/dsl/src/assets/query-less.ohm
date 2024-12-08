@@ -1,0 +1,63 @@
+/* TODO: All function names and parameters must be caseInsensitive  */
+
+Grammar {
+  Root = NonemptyListOf<Table, ";">
+  Table = Function<"Table", TableArgs>
+  TableArgs = Parameter<"name", String> (ArrayParameter<"fields", TableField>)? (ArrayParameter<"queries", TableQuery>)? (ArrayParameter<"workflows", TableWorkflow>)?
+
+  /* Table Field */
+  TableField = Function<"TableField", TableFieldArgs>
+  TableFieldArgs = Parameter<"name", String> Parameter<"type", PlainOrQuotes<FieldType>> (Parameter<"relatedEntity", String>)?
+  FieldType = QuoteString<("longitude" | "latitude" | "price" | "percentage" | "url" | "json" | "primary-key" | "relation" | "relation-id" | "uuid" | "email" | "password" | "single-line" | "multi-line" | "local-tel" | "international-tel" | "select" | "boolean" | "datetime" | "timestamp" | "date" | "time" | "decimal" | "integer" | "file")>
+
+  /* Table Query */
+  TableQuery = Function<"TableQuery", TableQueryArgs>
+  TableQueryArgs = Parameter<"name", String> Parameter<"query", SQLite> Parameter<args, ListOf<string, Comma?>>
+
+  /* Table Workflow */
+  TableWorkflow = Function<"TableWorkflow", TableWorkflowArgs>
+  TableWorkflowArgs = Parameter<"name", String> Parameter<"trigger", HttpTrigger> ArrayParameter<"actions", (TableWorkflowAtomicAction | TableWorkflowAction)>
+  HttpTrigger = Function<"http", HttpTriggerArgs>
+  HttpTriggerArgs = Parameter<"path", String> Parameter<"method", PlainOrQuotes<HttpMethod>>
+  HttpMethod = "POST" | "GET" | "PUT" | "DELETE" | "HEAD" | "PATCH"
+  TableWorkflowAtomicAction = Function<"atomic", TableWorkflowAtomicActionArgs>
+  TableWorkflowAtomicActionArgs = ArrayParameter<"actions", TableWorkflowAction>
+  TableWorkflowAction = Function<"action", TableWorkflowActionArgs>
+  TableWorkflowActionArgs = Parameter<"type", PlainOrQuotes<TableWorkflowActionType>>
+  TableWorkflowActionType = "delete-record" | "insert-record" | "update-record" | "replace-record"
+
+  /* Literals */
+  StringLiteral = String
+  BooleanLiteral = caseInsensitive<"true"> | caseInsensitive<"false">
+  NullLiteral = caseInsensitive<"null">
+  CurrentDate = Function<caseInsensitive<"CURRENT_DATE">, "">
+  Now = Function<caseInsensitive<"Now">, "">
+  NumericLiteral = Number | DoubleQuotedString<Number> | SingleQuotedString<Number>
+
+  /* Number Utils */
+  Number = Integer | UnsignedInteger | Float
+  Float = ((Integer | UnsignedInteger) ("." Integer)?)
+  Integer = (digit+)
+  UnsignedInteger = "-" Integer
+
+  /* Utilities */
+  Comma = ","
+  Assignment = "=" | ":"
+  LParen = "("
+  RParen = ")"
+  LBra = "["
+  RBra = "]"
+  SpecialChar = "." | "-" | "_" | "$" | "\\" | "/" | ":"
+  StringContent = (letter | SpecialChar)*
+  NonQuotedString = letter+
+  QuoteString<value> = DoubleQuotedString<value> | SingleQuotedString<value>
+  SingleQuotedString<value> = "'" value "'"
+  DoubleQuotedString<value> = "\"" value "\""
+  AnyString = DoubleQuotedString<(lower | upper)*> | SingleQuotedString<(lower | upper)*> | NonQuotedString
+  String = DoubleQuotedString<((lower | upper | SpecialChar)*)> | SingleQuotedString<((lower | upper | SpecialChar)*)>
+  PlainOrQuotes<value> = DoubleQuotedString<value> | SingleQuotedString<value> | value
+  Function<name, args> = PlainOrQuotes<name> LParen args RParen
+  Parameter<name, type> = PlainOrQuotes<name> Assignment type Comma?
+  ArrayParameter<name, type> = PlainOrQuotes<name> Assignment LBra NonemptyListOf<type, Comma?> RBra Comma?
+}
+

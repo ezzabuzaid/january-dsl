@@ -1,0 +1,63 @@
+Table(
+  name="orders",
+  fields=[
+    TableField(name="id", type="uuid"),
+    TableField(name="customer_id", type="relation", relatedEntity="users"),
+    TableField(name="product_id", type="relation", relatedEntity="products"),
+    TableField(name="quantity", type="integer"),
+    TableField(name="order_date", type="datetime"),
+    TableField(name="status", type="select")
+  ],
+  queries=[
+    TableQuery(
+      name="findOrdersByCustomer",
+      query=query(
+        conditions=[
+          where(input="customer_id", operator=equals(value=":customer_id"))
+        ],
+        joins=[
+          innerJoin(tableName="users", conditions=[
+            where(input="orders.customer_id", operator=equals(value="users.id"))
+          ])
+        ]
+      )
+    ),
+    TableQuery(
+      name="findOrdersByStatus",
+      query=query(
+        conditions=[
+          where(input="status", operator=equals(value=":status"))
+        ]
+      )
+    )
+  ],
+  workflows=[
+    TableWorkflow(
+      name="CreateOrder",
+      trigger=http(path="/create_order", method="POST"),
+      actions=[
+        atomic(actions=[
+          action(type="insert-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="UpdateOrder",
+      trigger=http(path="/update_order", method="PUT"),
+      actions=[
+        atomic(actions=[
+          action(type="update-record")
+        ])
+      ]
+    ),
+    TableWorkflow(
+      name="DeleteOrder",
+      trigger=http(path="/delete_order", method="DELETE"),
+      actions=[
+        atomic(actions=[
+          action(type="delete-record")
+        ])
+      ]
+    )
+  ]
+);
