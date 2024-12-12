@@ -1,0 +1,18 @@
+[
+  {
+    "prompt": "I want to fetch all orders",
+    "completion": "AddQuery(tableName='orders');"
+  },
+  {
+    "prompt": "list all orders",
+    "completion": "AddQuery(tableName='orders');"
+  },
+  {
+    "prompt": "create a query that gives me all orders",
+    "completion": "AddQuery(tableName='orders');"
+  },
+  {
+    "prompt": "I have a screen where I want to show all orders and the products in each order",
+    "completion": "AddQuery(tableName='orders', condition={input='products.id', operator='equal', value='orders.id'});"
+  }
+]

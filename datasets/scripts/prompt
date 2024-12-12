@@ -1,0 +1,8 @@
+Task: {{TASK}}
+Previous response: No previous response.
+Note: continue on the previous response if available.
+Note: Please provide only the DSL syntax as the response, adhering to the grammar rules
+
+{{DSL_SYNTAX}}
+
+Result:

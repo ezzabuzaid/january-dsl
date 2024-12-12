@@ -1,0 +1,122 @@
+[
+  {
+    "prompt": "I want to have a product table with product name field and product image, also the price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "My intention is to create a table for products that contains a field for the product name, product image, and price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I would like to have a table that lists the products along with their names, images, and prices.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "It is my desire to have a table that includes information on products, such as their names, images, and prices.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I am looking to create a table that includes a field for the name and image of each product, as well as its price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I aim to have a table that displays the name and image of each product, along with its corresponding price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "My goal is to create a product table that includes fields for the name and image of each product, as well as its price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I aspire to have a table that provides details on each product, such as its name, image, and price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "My objective is to create a table that contains a column for the name and image of each product, as well as its price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I hope to have a product table that features a field for each product's name, image, and price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "My aim is to create a table that shows information on each product, including its name, image, and price.",
+    "completion": "AddTable(tableName='product', fields=[AddField(fieldName='productName',type='string'),AddField(fieldName='image',type='file'),AddField(fieldName='price',type='price')]);"
+  },
+  {
+    "prompt": "I need a table to store employee records. I want to track their name, date of birth, email, address, phone number, and job title.",
+    "completion": "AddTable(tableName='employees', fields=[AddField(fieldName='name', type='string'), AddField(fieldName='dob', type='date'), AddField(fieldName='email', type='email'), AddField(fieldName='address', type='multi-line'), AddField(fieldName='phone', type='local-tel'), AddField(fieldName='jobTitle', type='string')]);"
+  },
+  {
+    "prompt": "I want to create a table that tracks customer orders. I need to record the date of the order, the customer's name and email, the product name, price, and quantity.",
+    "completion": "AddTable(tableName='orders', fields=[AddField(fieldName='orderDate', type='date'), AddField(fieldName='customerName', type='string'), AddField(fieldName='customerEmail', type='email'), AddField(fieldName='productName', type='string'), AddField(fieldName='productPrice', type='price'), AddField(fieldName='productQuantity', type='integer')]);"
+  },
+  {
+    "prompt": "I'm creating a table for recipes. I want to record the name of the recipe, ingredients, steps, and cook time.",
+    "completion": "AddTable(tableName='recipes', fields=[AddField(fieldName='name', type='string'), AddField(fieldName='ingredients', type='multi-line'), AddField(fieldName='steps', type='multi-line'), AddField(fieldName='cookTime', type='time')]);"
+  },
+  {
+    "prompt": "I need a table to store information on cars. I want to track the make and model, year, color, mileage, price, and a photo of each car.",
+    "completion": "AddTable(tableName='cars', fields=[AddField(fieldName='makeModel', type='string'), AddField(fieldName='year', type='integer'), AddField(fieldName='color', type='string'), AddField(fieldName='mileage', type='integer'), AddField(fieldName='price', type='price'), AddField(fieldName='photo', type='file')]);"
+  },
+  {
+    "prompt": "I'm creating a table for blog posts. I want to record the title, author, content, and date of each post.",
+    "completion": "AddTable(tableName='blogPosts', fields=[AddField(fieldName='title', type='string'), AddField(fieldName='author', type='string'), AddField(fieldName='content', type='multi-line'), AddField(fieldName='date', type='datetime')]);"
+  },
+  {
+    "prompt": "I need a table to store employee records. I want to track their name, date of birth, email, address, phone number, and job title.",
+    "completion": "AddTable(tableName='employees', fields=[AddField(fieldName='name', type='string'), AddField(fieldName='dob', type='date'), AddField(fieldName='email', type='email'), AddField(fieldName='address', type='multi-line'), AddField(fieldName='phone', type='local-tel'), AddField(fieldName='jobTitle', type='string')]);"
+  },
+  {
+    "prompt": "I want to create a table that tracks customer orders. I need to record the date of the order, the customer's name and email, the product name, price, and quantity.",
+    "completion": "AddTable(tableName='orders', fields=[AddField(fieldName='orderDate', type='date'), AddField(fieldName='customerName', type='string'), AddField(fieldName='customerEmail', type='email'), AddField(fieldName='productName', type='string'), AddField(fieldName='productPrice', type='price'), AddField(fieldName='productQuantity', type='integer')]);"
+  },
+  {
+    "prompt": "I'm creating a table for recipes. I want to record the name of the recipe, ingredients, steps, and cook time.",
+    "completion": "AddTable(tableName='recipes', fields=[AddField(fieldName='name', type='string'), AddField(fieldName='ingredients', type='multi-line'), AddField(fieldName='steps', type='multi-line'), AddField(fieldName='cookTime', type='time')]);"
+  },
+  {
+    "prompt": "I need a table to store information on cars. I want to track the make and model, year, color, mileage, price, and a photo of each car.",
+    "completion": "AddTable(tableName='cars', fields=[AddField(fieldName='makeModel', type='string'), AddField(fieldName='year', type='integer'), AddField(fieldName='color', type='string'), AddField(fieldName='mileage', type='integer'), AddField(fieldName='price', type='price'), AddField(fieldName='photo', type='file')]);"
+  },
+  {
+    "prompt": "I'm creating a table for blog posts. I want to record the title, author, content, and date of each post.",
+    "completion": "AddTable(tableName='blogPosts', fields=[AddField(fieldName='title', type='string'), AddField(fieldName='author', type='string'), AddField(fieldName='content', type='multi-line'), AddField(fieldName='date', type='datetime')]);"
+  },
+  {
+    "prompt": "I want to create a table for a library system. I need to track the book title, author, publisher, ISBN, number of pages, and whether or not the book is checked out.",
+    "completion": "AddTable(tableName='library', fields=[AddField(fieldName='title', type='string'), AddField(fieldName='author', type='string'), AddField(fieldName='publisher', type='string'), AddField(fieldName='ISBN', type='string'), AddField(fieldName='pages', type='integer'), AddField(fieldName='checkedOut', type='boolean')]);"
+  },
+  {
+    "prompt": "I need to create a table for customer information, including their name, email, phone number, and address.",
+    "completion": "AddTable(tableName='customer', fields=[AddField(fieldName='name',type='string'), AddField(fieldName='email',type='email'), AddField(fieldName='phone',type='local-tel'), AddField(fieldName='address',type='multi-line')]);"
+  },
+  {
+    "prompt": "I want to make a table for orders, with fields for the order number, customer name, order date, and total amount.",
+    "completion": "AddTable(tableName='orders', fields=[AddField(fieldName='orderNumber',type='primary-key'), AddField(fieldName='customerName',type='string'), AddField(fieldName='orderDate',type='date'), AddField(fieldName='totalAmount',type='price')]);"
+  },
+  {
+    "prompt": "I need to create a table to track employee information, including their name, job title, salary, and hire date.",
+    "completion": "AddTable(tableName='employee', fields=[AddField(fieldName='name',type='string'), AddField(fieldName='jobTitle',type='string'), AddField(fieldName='salary',type='decimal'), AddField(fieldName='hireDate',type='date')]);"
+  },
+  {
+    "prompt": "I want to make a table for tracking inventory, with fields for the product name, quantity on hand, cost per unit, and supplier name.",
+    "completion": "AddTable(tableName='inventory', fields=[AddField(fieldName='productName',type='string'), AddField(fieldName='quantity',type='integer'), AddField(fieldName='costPerUnit',type='price'), AddField(fieldName='supplierName',type='string')]);"
+  },
+  {
+    "prompt": "I need to create a table for tracking sales, including fields for the sales date, product name, quantity sold, and total revenue.",
+    "completion": "AddTable(tableName='sales', fields=[AddField(fieldName='salesDate',type='date'), AddField(fieldName='productName',type='string'), AddField(fieldName='quantitySold',type='integer'), AddField(fieldName='totalRevenue',type='price')]);"
+  },
+  {
+    "prompt": "I want to make a table for tracking customer orders, with fields for the order number, customer name, product name, and order date.",
+    "completion": "AddTable(tableName='customerOrders', fields=[AddField(fieldName='orderNumber',type='primary-key'), AddField(fieldName='customerName',type='string'), AddField(fieldName='productName',type='string'), AddField(fieldName='orderDate',type='date')]);"
+  },
+  {
+    "prompt": "I need to create a table for tracking website traffic, including fields for the page URL, number of visits, and average time spent on the page.",
+    "completion": "AddTable(tableName='websiteTraffic', fields=[AddField(fieldName='pageURL',type='url'), AddField(fieldName='numVisits',type='integer'), AddField(fieldName='avgTimeSpent',type='time')]);"
+  },
+  {
+    "prompt": "I want to make a table for tracking employee attendance, with fields for the employee name, date, and whether they were present or absent.",
+    "completion": "AddTable(tableName='employeeAttendance', fields=[AddField(fieldName='employeeName',type='string'), AddField(fieldName='date',type='date'), AddField(fieldName='attendanceStatus',type='select')]);"
+  }
+]

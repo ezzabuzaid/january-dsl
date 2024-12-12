@@ -1,0 +1,95 @@
+<statement> ::= <table> ( ";" <table> )*
+<table> ::= "Table(" <tableArgs> ")"
+<tableArgs> ::= "name=" <camelCaseString> ("," "fields=" "[" <tableField> ( "," <tableField> )* "]" ("," "queries=" "[" <tableQuery> ("," <tableQuery>)* "]")? ("," "workflows=" "[" <tableWorkflow> ("," <tableWorkflow>)*)?  )?
+<tableField> ::= "TableField(" <tableFieldArgs> ")"
+<tableFieldArgs> ::= "name=" <camelCaseString> "," "type=" <fieldType> (",relatedEntity=" <camelCaseString>)?
+<tableQuery> ::= "TableQuery(" <tableQueryArgs> ")"
+<tableQueryArgs> ::= "name=" <camelCaseString> "," "query=" <queryDsl>
+<fieldType> ::= "'" ("longitude" | "latitude" | "price" | "percentage" | "url" | "json" | "primary-key" | "relation" | "relation-id" | "uuid" | "email" | "password" | "single-line" | "multi-line" | "local-tel" | "international-tel" | "select" | "boolean" | "datetime" | "timestamp" | "date" | "time" | "decimal" | "integer" | "file") "'"
+<tableWorkflow> ::= "TableWorkflow(" <tableWorkflowArgs> ")"
+<tableWorkflowArgs> ::= "name=" <camelCaseString> "," "trigger=" <httpTrigger> "," "actions=" ( "[" <workflowActionList> "]" )?
+<httpTrigger> ::= "http(" "path=" <camelCaseString> "," "method=" <httpMethod> ")"
+<httpMethod> ::= "POST" | "GET" | "PUT" | "DELETE" | "HEAD" | "PATCH"
+<workflowActionType> ::= "delete-record" | "insert-record" | "update-record" | "replace-record"
+<workflowAction> ::= "action(" "name=" "'" <workflowActionType> "'" ")"
+<workflowAtomicAction> ::= "atomic(" "actions=" "[" <workflowAction> ("," <workflowAction>)* "]" ")"
+<workflowActionList> ::= <workflowAtomicAction> | <workflowAction> ("," <workflowAtomicAction> | <workflowAction>)*
+
+<queryDsl> ::= "query(" <queryConditionsList> ("," <queryJoinsList>)? ("," <queryAggregatesList>)? ("," "groupBy=" "[" <camelCaseString> "]")? ")"
+<queryCombinator> ::= "and" | "or" "(" <queryConditionsList> ")"
+<queryConditionsList> ::= "conditions=" "[" <queryWhere> ("," <queryWhere>)* "]"
+<queryJoinsList> ::= "joins=" "[" <join> "]"
+<queryAggregatesList> ::= "aggregates=" "[" <aggregatesOperators> "]"
+<queryWhere> ::= "where" "(" <inputList> "," "operator" "=" <queryOperators> ")"
+<queryOperators> ::= <queryCombinator> | <equals> | <between> | <is> | <isEmpty> | <isNotEmpty> | <contains> | <startsWith> | <endsWith> | <comparisonOperators>
+
+/* String Operators */
+<equals> ::= ("equals" "(" "value=" <stringLiteral> ")")
+<startsWith> ::= ("startsWith" "(" "value=" <stringLiteral> ")")
+<endsWith> ::= ("endsWith" "(" "value=" <stringLiteral> ")")
+<contains> ::= ("contains" "(" "value=" <stringLiteral> ")")
+
+/* Is Operators */
+<isEmpty> ::= ("isEmpty" "(" ")")
+<isNotEmpty> ::= ("isNotEmpty" "(" ")")
+<is> ::= ("is" "(" <isArguments> ")")
+<isArguments> ::= "value=" "(" <booleanLiteral> | <nullLiteral> ")"
+
+/* Date Operators */
+<before> ::= ("before" "(" <dateRangeArgs> ")")
+<beforeOn> ::= ("beforeOn" "(" <dateRangeArgs> ")")
+<after> ::= ("after" "(" <dateRangeArgs> ")")
+<afterOn> ::= ("afterOn" "(" <dateRangeArgs> ")")
+<dateRangeArgs> ::= ("value=" (<stringLiteral> | <currentDate> | <arithmeticOperators>))
+<between> ::= ("between" "(" <betweenArguments> ")")
+<betweenArguments> ::= "from" "(" <betweenMinArguments> ")" "," "to" "(" <betweenMaxArguments> ")"
+<betweenMinArguments> ::= ("value=" (<stringLiteral> | <currentDate> | <numericLiteral> | <arithmeticOperators>))
+<betweenMaxArguments> ::= ("value=" (<stringLiteral> | <currentDate> | <numericLiteral> | <arithmeticOperators>))
+
+/* Comparison Operators */
+<comparisonOperators> ::= <greaterThan> | <lessThan> | <greaterOrEqualThan> | <lessOrEqualThan>
+<greaterThan> ::= ("greaterThan" "(" <comparisonArguments> ")")
+<lessThan> ::= ("lessThan" "(" <comparisonArguments> ")")
+<greaterOrEqualThan> ::= ("greaterOrEqualThan" "(" <comparisonArguments> ")")
+<lessOrEqualThan> ::= ("lessOrEqualThan" "(" <comparisonArguments> ")")
+<comparisonArguments> ::= ("value=" (<currentDate> | <numericLiteral> | <arithmeticOperators>))
+
+/* Arithmetic Operators */
+<arithmeticOperators> ::= <add> | <subtract> | <multiply> | <divide>
+<arithmeticArguments> ::= ("value=" <currentDate> | <stringLiteral> | <numericLiteral> "," "operand" "=" <numericLiteral> "," "unit" "=" "'" <arithmeticUnit> "'")
+<arithmeticUnit> ::= "year" | "month" | "day" | "hour" | "minute" | "second" | "millisecond"
+<add> ::= ("add" "(" <arithmeticArguments> ")")
+<subtract> ::= ("subtract" "(" <arithmeticArguments> ")")
+<multiply> ::= ("multiply" "(" <arithmeticArguments> ")")
+<divide> ::= ("divide" "(" <arithmeticArguments> ")")
+
+/* Literals */
+<literal> ::= <stringLiteral> | <numericLiteral> | <booleanLiteral> | <nullLiteral>
+<stringLiteral> ::= "'" (<lowercaseLetter> | <uppercaseLetter>) "'"
+<numericLiteral> ::= (<integer>+ (<floatingPoints>+)?)
+<booleanLiteral> ::= "true" | "false"
+<nullLiteral> ::= "null"
+<currentDate> ::= "NOW"
+
+/* Join */
+<join> ::= <joinType> "(" "tableName" "=" <camelCaseString> "," <queryConditionsList> ")"
+<joinType> ::= "innerJoin"
+
+/* Aggregates */
+<aggregatesOperators> ::=  <aggregateSum> | <aggregateCount> | <aggregateAvg> | <aggregateMin> | <aggregateMax>
+<aggregateSum> ::= ("sum" "(" <inputList> ")")
+<aggregateCount> ::= ("count" "(" <inputList> ")")
+<aggregateAvg> ::= ("avg" "(" <inputList> ")")
+<aggregateMin> ::= ("min" "(" <inputList> ")")
+<aggregateMax> ::= ("max" "(" <inputList> ")")
+
+/* Utilities */
+<camelCaseString> ::= "'" <lowercaseLetter> (<lowercaseLetter> | <uppercaseLetter>)* "'"
+<lowercaseLetter> ::= ([a-z])
+<uppercaseLetter> ::= ([A-Z])
+<integer> ::= ([0-9])
+<floatingPoints> ::= "." ([0-9]+)
+<inputList> ::= "input=" <camelCaseString> ("," <camelCaseString>)*
+
+
+
